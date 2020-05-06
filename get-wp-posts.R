@@ -12,11 +12,11 @@
 
 get_wp_posts <- function(root_url) {
   
-  response <- 1
+  response <- list(list(1),list(1),list(status = 1))
   n <- 1
   posts_real <- tibble()
   
-  while (length(response) > 0) { 
+  while (length(response) > 0 & response[[3]]$status != 400) { 
     print(n)
     response <- content(GET(paste0(root_url,'wp-json/wp/v2/posts?per_page=100&page=',n)))
     if(length(response) > 0 & response[[3]]$status != 400) {
