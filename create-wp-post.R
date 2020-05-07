@@ -23,6 +23,5 @@ create_wp_post <- function(root_url,user,pass,title_val,excerpt_val ='',content_
                         categories=categories_val,
                         tags = tag_val),
             encode = "json")
-  rt <- tibble(tag_id = content(ch)$id, name = content(ch)$name,slug = content(ch)$slug, description = content(ch)$description)
   return(ch)
 }
