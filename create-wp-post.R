@@ -6,9 +6,9 @@
 #'
 #' @return NULL
 #'
-#' @examples get_wp_post()
+#' @examples create_wp_post()
 #'
-#' @export get_wp_post
+#' @export create_wp_post
 
 create_wp_post <- function(root_url,user,pass,title_val,excerpt_val ='',content_val,status_val,author_val,
                            format_val = 'standard',categories_val, tag_val = '') {
