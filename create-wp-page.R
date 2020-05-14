@@ -1,0 +1,27 @@
+#' @title ethereum token content generator
+#'
+#' @description writes research reports for erc20 tokens
+#'
+#' @param address
+#'
+#' @return NULL
+#'
+#' @examples create_wp_post()
+#'
+#' @export create_wp_post
+
+create_wp_page <- function(root_url,user,pass,title_val,excerpt_val ='',content_val,status_val,author_val,
+                           format_val = 'standard',categories_val, tag_val = '') {
+  ch = POST(paste0(root_url,"/wp-json/wp/v2/page"),
+            authenticate(user,pass),
+            body = list(title = title_val,
+                        excerpt = excerpt_val,
+                        content = content_val,
+                        status = status_val,
+                        author=author_val,
+                        format=format_val,
+                        categories=categories_val,
+                        tags = tag_val),
+            encode = "json")
+  return(ch)
+}
