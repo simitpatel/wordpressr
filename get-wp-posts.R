@@ -10,18 +10,15 @@
 #'
 #' @export get_wp_tags
 
-get_wp_posts <- function(root_url) {
+get_wp_posts <- function(root_url, post_count = Inf) {
   
-  response <- list(list(1),list(1),list(status = 1))
-  n <- 1
-  posts_real <- tibble()
-  
-  while (length(response) > 0 & response[[3]]$status != 400) { 
-    print(n)
-    response <- content(GET(paste0(root_url,'wp-json/wp/v2/posts?per_page=100&page=',n)))
-    if(length(response) > 0 & response[[3]]$status != 400) {
+  if(is.finite(post_count)) {
+    posts_real <- tibble()
+    loop_count <- ceiling(post_count/100)
+    for(j in 1:loop_count) {
+      response <- content(GET(paste0(root_url,'/wp-json/wp/v2/posts?per_page=100&page=',j)))
       for(k in 1:length(response)) {
-        response_df <- tibble(id = response[[k]]$id, date = response[[k]]$date, amu_url = response[[k]]$guid$rendered,
+        response_df <- tibble(id = response[[k]]$id, date = response[[k]]$date, url = response[[k]]$guid$rendered,
                               title = response[[k]]$title$rendered, content = response[[k]]$content$rendered,
                               author = response[[k]]$author)
         response_tags <- c()
@@ -38,9 +35,41 @@ get_wp_posts <- function(root_url) {
         response_df <- response_df %>% mutate(tags = rtg)
         posts_real <- bind_rows(posts_real,response_df)
       }
-      n <- n + 1
     }
-    else(print(paste0('out of content after ',n,' pages')))
+    return(posts_real)
   }
- return(posts_real) 
+    
+  if(!is.finite(post_count)) {
+    response <- list(list(1),list(1),list(status = 1))
+    n <- 1
+    posts_real <- tibble()
+    
+    while (length(response) > 0 & response[[3]]$status != 400) { 
+      print(n)
+      response <- content(GET(paste0(root_url,'/wp-json/wp/v2/posts?per_page=100&page=',n)))
+      if(length(response) > 0 & response[[3]]$status != 400) {
+        for(k in 1:length(response)) {
+          response_df <- tibble(id = response[[k]]$id, date = response[[k]]$date, amu_url = response[[k]]$guid$rendered,
+                                title = response[[k]]$title$rendered, content = response[[k]]$content$rendered,
+                                author = response[[k]]$author)
+          response_tags <- c()
+          if(length(response[[k]]$tags) > 0) {
+            for(i in 1:length(response[[k]]$tags)) {
+              itag = response[[k]]$tags[[i]]
+              response_tags <- c(response_tags,itag)
+            }
+            rtg <- response_tags %>% glue_collapse(sep = ',', last = ',')
+          }
+          if(length(response[[k]]$tags) == 0) {
+            rtg = ''
+          }
+          response_df <- response_df %>% mutate(tags = rtg)
+          posts_real <- bind_rows(posts_real,response_df)
+        }
+        n <- n + 1
+      }
+      else(print(paste0('out of content after ',n,' pages')))
+    }
+    return(posts_real)  
+  }
 }
