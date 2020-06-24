@@ -29,10 +29,21 @@ get_wp_posts <- function(root_url, post_count = Inf) {
           }
           rtg <- response_tags %>% glue_collapse(sep = ',', last = ',')
         }
+        response_cats <- c()
+        if(length(response[[k]]$categories) > 0) {
+          for(i in 1:length(response[[k]]$categories)) {
+            icat = response[[k]]$categories[[i]]
+            response_cats <- c(response_cats,icat)
+          }
+          rtc <- response_cats %>% glue_collapse(sep = ',', last = ',')
+        }
         if(length(response[[k]]$tags) == 0) {
           rtg = ''
         }
-        response_df <- response_df %>% mutate(tags = rtg)
+        if(length(response[[k]]$categories) == 0) {
+          rtc = ''
+        }
+        response_df <- response_df %>% mutate(tags = rtg, categories = rtc)
         posts_real <- bind_rows(posts_real,response_df)
       }
     }
@@ -63,7 +74,21 @@ get_wp_posts <- function(root_url, post_count = Inf) {
           if(length(response[[k]]$tags) == 0) {
             rtg = ''
           }
-          response_df <- response_df %>% mutate(tags = rtg)
+          response_cats <- c()
+          if(length(response[[k]]$categories) > 0) {
+            for(i in 1:length(response[[k]]$categories)) {
+              icat = response[[k]]$categories[[i]]
+              response_cats <- c(response_cats,icat)
+            }
+            rtc <- response_cats %>% glue_collapse(sep = ',', last = ',')
+          }
+          if(length(response[[k]]$tags) == 0) {
+            rtg = ''
+          }
+          if(length(response[[k]]$categories) == 0) {
+            rtc = ''
+          }
+          response_df <- response_df %>% mutate(tags = rtg, categories = rtc)
           posts_real <- bind_rows(posts_real,response_df)
         }
         n <- n + 1
