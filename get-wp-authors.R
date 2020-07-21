@@ -1,45 +1,35 @@
-#' @title ethereum token content generator
+#' @title Get WordPress Authors
 #'
-#' @description writes research reports for erc20 tokens
+#' @description Retrieves a list of all publishers on the site.
 #'
-#' @param address
+#' @param root_url The WordPress site for which the data is sought.
 #'
-#' @return NULL
+#' @return A dataframe with four values: the user ID for the author in the site's WordPress database; the author's URL on the site; the author's name in the database; and the value of the description field associated with the author.
 #'
-#' @examples get_wp_authors()
+#' #'\dontrun{
+#' get_wp_authors('domain.com')
+#'}
 #'
 #' @export get_wp_authors
 
 get_wp_authors <- function(root_url) {
-  
+
   response <- 1
   n <- 1
   authors_real <- tibble()
-  
-  while (length(response) > 0) { 
+
+  while (length(response) > 0) {
     print(n)
     response <- content(GET(paste0(root_url,'/wp-json/wp/v2/users?per_page=100&page=',n)))
-    if(length(response) > 0 & response[[3]]$status != 400) {
+    if(length(response) > 0) {
       for(k in 1:length(response)) {
-        response_df <- tibble(user_id = response[[k]]$id, amu_url = response[[k]]$link,
-                              user_name = response[[k]]$name)
-        response_tags <- c()
-        if(length(response[[k]]$tags) > 0) {
-          for(i in 1:length(response[[k]]$tags)) {
-            itag = response[[k]]$tags[[i]]
-            response_tags <- c(response_tags,itag)
-          }
-          rtg <- response_tags %>% glue_collapse(sep = ',', last = ',')
-        }
-        if(length(response[[k]]$tags) == 0) {
-          rtg = ''
-        }
-        response_df <- response_df %>% mutate(tags = rtg)
-        posts_real <- bind_rows(posts_real,response_df)
+        response_df <- tibble(user_id = response[[k]]$id, author_url = response[[k]]$link,
+                              user_name = response[[k]]$name, description = response[[k]]$description)
+        authors_real <- bind_rows(authors_real,response_df)
       }
       n <- n + 1
     }
     else(print(paste0('out of content after ',n,' pages')))
   }
- return(posts_real) 
+ return(authors_real)
 }
