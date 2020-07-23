@@ -64,7 +64,7 @@ get_wp_posts <- function(root_url, post_count = Inf,after_date = NULL) {
       response <- content(GET(paste0(root_url,'/wp-json/wp/v2/posts?per_page=100&page=',n,'&after=',after_date)))
       if(length(response) > 0 & response[[3]]$status != 400) {
         for(k in 1:length(response)) {
-          response_df <- tibble(id = response[[k]]$id, date = response[[k]]$date, amu_url = response[[k]]$guid$rendered,
+          response_df <- tibble(id = response[[k]]$id, date = response[[k]]$date, url = response[[k]]$guid$rendered,
                                 title = response[[k]]$title$rendered, content = response[[k]]$content$rendered,
                                 author = response[[k]]$author)
           response_tags <- c()
