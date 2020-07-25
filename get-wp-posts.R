@@ -12,16 +12,17 @@
 
 get_wp_posts <- function(root_url, post_count = Inf,after_date = NULL) {
   if(!is.null(after_date)) {
-    after_date <- after_date %>% paste0("T00:00:00")
+    after_date <- after_date %>% as.character() %>% paste0("T00:00:00")
   }
   if(is.finite(post_count)) {
     posts_real <- tibble()
     loop_count <- ceiling(post_count/100)
     for(j in 1:loop_count) {
-      print(j)
       response <- content(GET(paste0(root_url,'/wp-json/wp/v2/posts?per_page=100&page=',j,'&after=',after_date)))
+      if(!is.null(response$data$status)) {
+        return(posts_real)
+      }
       for(k in 1:length(response)) {
-        print(k)
         response_df <- tibble(id = response[[k]]$id, date = response[[k]]$date, url = response[[k]]$guid$rendered,
                               title = response[[k]]$title$rendered, content = response[[k]]$content$rendered,
                               author = response[[k]]$author)
@@ -60,7 +61,6 @@ get_wp_posts <- function(root_url, post_count = Inf,after_date = NULL) {
     posts_real <- tibble()
     
     while (length(response) > 0 & response[[3]]$status != 400) { 
-      print(n)
       response <- content(GET(paste0(root_url,'/wp-json/wp/v2/posts?per_page=100&page=',n,'&after=',after_date)))
       if(length(response) > 0 & response[[3]]$status != 400) {
         for(k in 1:length(response)) {
