@@ -18,7 +18,12 @@ get_wp_posts <- function(root_url, post_count = Inf,after_date = NULL) {
     posts_real <- tibble()
     loop_count <- ceiling(post_count/100)
     for(j in 1:loop_count) {
-      response <- content(GET(paste0(root_url,'/wp-json/wp/v2/posts?per_page=100&page=',j,'&after=',after_date)))
+      if(!is.null(after_date)) {
+        response <- content(GET(paste0(root_url,'/wp-json/wp/v2/posts?per_page=100&page=',j,'&after=',after_date)))
+      }
+      if(is.null(after_date)) {
+        response <- content(GET(paste0(root_url,'/wp-json/wp/v2/posts?per_page=100&page=',j)))
+      }
       if(!is.null(response$data$status)) {
         return(posts_real)
       }
@@ -61,7 +66,12 @@ get_wp_posts <- function(root_url, post_count = Inf,after_date = NULL) {
     posts_real <- tibble()
     
     while (length(response) > 0 & response[[3]]$status != 400) { 
-      response <- content(GET(paste0(root_url,'/wp-json/wp/v2/posts?per_page=100&page=',n,'&after=',after_date)))
+      if(!is.null(after_date)) {
+        response <- content(GET(paste0(root_url,'/wp-json/wp/v2/posts?per_page=100&page=',j,'&after=',after_date)))
+      }
+      if(is.null(after_date)) {
+        response <- content(GET(paste0(root_url,'/wp-json/wp/v2/posts?per_page=100&page=',j)))
+      }
       if(length(response) > 0 & response[[3]]$status != 400) {
         for(k in 1:length(response)) {
           response_df <- tibble(id = response[[k]]$id, date = response[[k]]$date, url = response[[k]]$guid$rendered,
