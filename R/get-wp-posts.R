@@ -1,15 +1,19 @@
-#' @title ethereum token content generator
+#' @title Retrieve WordPress Posts
 #'
-#' @description writes research reports for erc20 tokens
+#' @description Retrieve posts made on the WordPress site.
 #'
-#' @param address
+#' @param root_url The WordPress site for which posts are sought to be retrieved.
+#' @param post_count The maximum number of posts to return, sorted by the most recent date. Default value is to return all posts made on the site.
+#' @param after_date The date after which posts should be returned.
+#' @return A data frame returning the post ID, publication date, title, excerpt, content, tag IDs, category IDs, and author IDs.
 #'
-#' @return NULL
+#'@examples
+#'\dontrun{
+#'get_wp_posts(root_url = 'https://domain.com',post_count = 200, after_date = NULL)
+#'}
 #'
-#' @examples get_wp_tags()
+#' @export get_wp_posts
 #'
-#' @export get_wp_tags
-
 get_wp_posts <- function(root_url, post_count = Inf,after_date = NULL) {
   if(!is.null(after_date)) {
     after_date <- after_date %>% as.character() %>% paste0("T00:00:00")
@@ -59,13 +63,13 @@ get_wp_posts <- function(root_url, post_count = Inf,after_date = NULL) {
     }
     return(posts_real)
   }
-    
+
   if(!is.finite(post_count)) {
     response <- list(list(1),list(1),list(status = 1))
     n <- 1
     posts_real <- tibble()
-    
-    while (length(response) > 0 & response[[3]]$status != 400) { 
+
+    while (length(response) > 0 & response[[3]]$status != 400) {
       if(!is.null(after_date)) {
         response <- content(GET(paste0(root_url,'/wp-json/wp/v2/posts?per_page=100&page=',j,'&after=',after_date)))
       }
@@ -109,6 +113,6 @@ get_wp_posts <- function(root_url, post_count = Inf,after_date = NULL) {
       }
       else(print(paste0('out of content after ',n,' pages')))
     }
-    return(posts_real)  
+    return(posts_real)
   }
 }
