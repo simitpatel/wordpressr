@@ -23,10 +23,10 @@ get_wp_posts <- function(root_url, post_count = Inf,after_date = NULL) {
     loop_count <- ceiling(post_count/100)
     for(j in 1:loop_count) {
       if(!is.null(after_date)) {
-        response <- content(GET(paste0(root_url,'/wp-json/wp/v2/posts?per_page=100&page=',j,'&after=',after_date)),type = 'application/json')
+        response <- content(GET(paste0(root_url,'/wp-json/wp/v2/posts?per_page=100&page=',j,'&after=',after_date),accept_json()))
       }
       if(is.null(after_date)) {
-        response <- content(GET(paste0(root_url,'/wp-json/wp/v2/posts?per_page=100&page=',j)),type = 'application/json')
+        response <- content(GET(paste0(root_url,'/wp-json/wp/v2/posts?per_page=100&page=',j),accept_json()))
       }
       if(!is.null(response$data$status)) {
         return(posts_real)
@@ -71,10 +71,10 @@ get_wp_posts <- function(root_url, post_count = Inf,after_date = NULL) {
 
     while (length(response) > 0 & response[[3]]$status != 400) {
       if(!is.null(after_date)) {
-        response <- content(GET(paste0(root_url,'/wp-json/wp/v2/posts?per_page=100&page=',j,'&after=',after_date)),type = 'application/json')
+        response <- content(GET(paste0(root_url,'/wp-json/wp/v2/posts?per_page=100&page=',n,'&after=',after_date),accept_json()))
       }
       if(is.null(after_date)) {
-        response <- content(GET(paste0(root_url,'/wp-json/wp/v2/posts?per_page=100&page=',j)),type = 'application/json')
+        response <- content(GET(paste0(root_url,'/wp-json/wp/v2/posts?per_page=100&page=',n),accept_json()))
       }
       if(length(response) > 0 & response[[3]]$status != 400) {
         for(k in 1:length(response)) {
