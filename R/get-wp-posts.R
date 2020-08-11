@@ -15,6 +15,10 @@
 #' @export get_wp_posts
 #'
 get_wp_posts <- function(root_url, post_count = Inf,after_date = NULL) {
+  require(tibble)
+  require(httr)
+  require(dplyr)
+
   if(!is.null(after_date)) {
     after_date <- after_date %>% as.character() %>% paste0("T00:00:00")
   }

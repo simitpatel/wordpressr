@@ -23,6 +23,9 @@
 #' @export update_wp_cat
 
 update_wp_cat <- function(domain,user, pass,tag_id,tag_name,tag_slug,tag_description,verbose = TRUE) {
+  require(tibble)
+  require(httr)
+  require(dplyr)
   if(verbose == TRUE){
     print(paste(tag_name,"||",tag_slug))
   }

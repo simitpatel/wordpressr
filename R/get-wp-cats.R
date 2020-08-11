@@ -13,6 +13,9 @@
 #' @export get_wp_cats
 
 get_wp_cats <- function(root_url) {
+  require(tibble)
+  require(httr)
+  require(dplyr)
 
   response <- list(list(1),list(1),list(status = 1))
   n <- 1

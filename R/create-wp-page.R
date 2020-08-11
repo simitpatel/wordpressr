@@ -27,6 +27,9 @@
 
 create_wp_page <- function(root_url,user,pass,title_val,excerpt_val ='',content_val,status_val,author_val,
                            format_val = 'standard',categories_val, tag_val = '') {
+  require(tibble)
+  require(httr)
+  require(dplyr)
   ch = httr::POST(paste0(root_url,"/wp-json/wp/v2/page"),
             httr::authenticate(user,pass),
             body = list(title = title_val,

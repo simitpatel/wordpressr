@@ -13,6 +13,9 @@
 #' @export get_wp_authors
 
 get_wp_authors <- function(root_url) {
+  require(tibble)
+  require(httr)
+  require(dplyr)
 
   response <- 1
   n <- 1

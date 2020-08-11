@@ -10,7 +10,7 @@
 #' @param excerpt_val The excerpt to be shown where your WordPress features excerpts of post.
 #' @param content_val The content of the post.
 #' @param fifu_val If the Featured Image From URL plugin is installed, users can specify a remotely hosted image file to use as the featured image for the post.
-#' This field defaults to a value of NULL. 
+#' This field defaults to a value of NULL.
 #' @param status_val The status of the post. Can be one of 'draft','publish','pending','future','private'.
 #' @param author_val The user ID of the author creating the post.
 #' @param categories_val The category IDs the post is to be associated with; ; comma separate in a character string if more than one.
@@ -31,10 +31,14 @@
 
 create_wp_post <- function(root_url,user,pass,title_val,excerpt_val ='',content_val,fifu_val = NULL,status_val,author_val,
                            format_val = 'standard',categories_val, tag_val = '') {
+  require(tibble)
+  require(httr)
+  require(dplyr)
+
   pb <- list(title = title_val,
              excerpt = excerpt_val,
              content = content_val,
-             fifu = fifu_val, 
+             fifu = fifu_val,
              status = status_val,
              author=author_val,
              format=format_val,

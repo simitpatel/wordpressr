@@ -26,7 +26,11 @@
 #'
 #' @export update_wp_page
 
-update_wp_page <- function(root_url,user,pass,page_id,title_val,excerpt_val ='',fifu_val,content_val,status_val,author_val) {
+update_wp_page <- function(root_url,user,pass,page_id,title_val,excerpt_val ='',fifu_val,content_val,
+                           status_val,author_val) {
+  require(tibble)
+  require(httr)
+  require(dplyr)
   ch = POST(glue("{root_url}/wp-json/wp/v2/pages/{page_id}"),
             authenticate(user,pass),
             body = list(title = title_val,

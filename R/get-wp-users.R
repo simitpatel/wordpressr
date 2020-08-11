@@ -13,6 +13,9 @@
 #' @export get_wp_users()
 
 get_wp_users <- function(root_url) {
+  require(tibble)
+  require(httr)
+  require(dplyr)
 
   response <- 1
   n <- 1

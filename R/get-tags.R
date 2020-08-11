@@ -13,6 +13,10 @@
 #' @export get_wp_tags
 
 get_wp_tags <- function(root_url) {
+  require(tibble)
+  require(httr)
+  require(dplyr)
+  require(tidyr)
 
   response <- 1
   n <- 1

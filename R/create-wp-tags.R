@@ -20,6 +20,9 @@
 #' @export create_wp_tags
 
 create_wp_tags <- function(root_url,user,pass,tag_name,description_text) {
+  require(tibble)
+  require(httr)
+  require(dplyr)
   ch = httr::POST(paste0(root_url,"/wp-json/wp/v2/tags"),
             httr::authenticate(user,pass),
             body = list(name = tag_name,
