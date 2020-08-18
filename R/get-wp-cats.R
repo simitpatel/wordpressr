@@ -6,16 +6,16 @@
 #'
 #' @return A data frame, unique by category ID, with 7 columns: category ID, category name, category slug, post count, description, URL, and parent category.
 #'
-#'\dontrun{
+#' \dontrun{
 #'get_wp_cats(root_url = 'domain.com')
 #'}
 #'
 #' @export get_wp_cats
+#' @import tibble
+#' @import httr
+#' @import dplyr
 
 get_wp_cats <- function(root_url) {
-  require(tibble)
-  require(httr)
-  require(dplyr)
 
   response <- list(list(1),list(1),list(status = 1))
   n <- 1

@@ -8,16 +8,17 @@
 #' @return A data frame returning the post ID, publication date, title, excerpt, content, tag IDs, category IDs, and author IDs.
 #'
 #'@examples
-#'\dontrun{
+#' \dontrun{
 #'get_wp_posts(root_url = 'https://domain.com',post_count = 200, after_date = NULL)
 #'}
 #'
 #' @export get_wp_posts
-#'
+#' @import tibble
+#' @import httr
+#' @import dplyr
+#' @import glue
+
 get_wp_posts <- function(root_url, post_count = Inf,after_date = NULL) {
-  require(tibble)
-  require(httr)
-  require(dplyr)
 
   if(!is.null(after_date)) {
     after_date <- after_date %>% as.character() %>% paste0("T00:00:00")

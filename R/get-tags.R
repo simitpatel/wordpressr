@@ -7,16 +7,16 @@
 #' @return A dataframe with three values: the slug for a given tag, its ID in the WordPress site database, and the human readable tag name.
 #'
 #' @examples
-#' #'\dontrun{
+#' \dontrun{
 #' get_wp_tags('domain.com')
 #' }
 #' @export get_wp_tags
+#' @import tibble
+#' @import httr
+#' @import dplyr
+#' @import tidyr
 
 get_wp_tags <- function(root_url) {
-  require(tibble)
-  require(httr)
-  require(dplyr)
-  require(tidyr)
 
   response <- 1
   n <- 1

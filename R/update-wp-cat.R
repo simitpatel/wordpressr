@@ -15,17 +15,19 @@
 #' @return response from the API. 200 means success -- the category was updated!
 #'
 #'@examples
-#'\dontrun{
+#' \dontrun{
 #'update_wp_cat(root_url = 'https://domain.com',user = Sys.getenv('username'),pass = Sys.getenv('password'),
 #'tag_name = 'cool posts',description_text = 'this is the description text for the category "very cool posts". ')
 #'}
 #'
 #' @export update_wp_cat
+#' @import tibble
+#' @import httr
+#' @import dplyr
+#' @import glue
 
 update_wp_cat <- function(domain,user, pass,tag_id,tag_name,tag_slug,tag_description,verbose = TRUE) {
-  require(tibble)
-  require(httr)
-  require(dplyr)
+
   if(verbose == TRUE){
     print(paste(tag_name,"||",tag_slug))
   }

@@ -6,16 +6,16 @@
 #'
 #' @return A dataframe with four values: the user ID for the author in the site's WordPress database; the author's URL on the site; the author's name in the database; and the value of the description field associated with the author.
 #'
-#' #'\dontrun{
+#' \dontrun{
 #' get_wp_authors('domain.com')
 #'}
 #'
 #' @export get_wp_authors
+#' @import tibble
+#' @import httr
+#' @import dplyr
 
 get_wp_authors <- function(root_url) {
-  require(tibble)
-  require(httr)
-  require(dplyr)
 
   response <- 1
   n <- 1

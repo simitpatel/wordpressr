@@ -12,17 +12,17 @@
 #' @return response from the API. 200 means the tag was created!
 #'
 #'@examples
-#'\dontrun{
+#' \dontrun{
 #'create_wp_tag(root_url = 'https://domain.com',user = Sys.getenv('username'),pass = Sys.getenv('password'),
 #'tag_name = 'cool posts',description_text = 'this is the description text for the tag "cool posts". ')
 #'}
 #'
 #' @export create_wp_tags
+#' @import tibble
+#' @import httr
+#' @import dplyr
 
 create_wp_tags <- function(root_url,user,pass,tag_name,description_text) {
-  require(tibble)
-  require(httr)
-  require(dplyr)
   ch = httr::POST(paste0(root_url,"/wp-json/wp/v2/tags"),
             httr::authenticate(user,pass),
             body = list(name = tag_name,

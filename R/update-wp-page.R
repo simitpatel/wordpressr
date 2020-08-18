@@ -17,7 +17,7 @@
 #' @return A list containing the status code of the API call. A status code of 200 indicates the call was a success.
 #'
 #'@examples
-#'\dontrun{
+#' \dontrun{
 #'update_wp_page(root_url = 'https://domain.com',user = Sys.getenv('username'),pass = Sys.getenv('password'),
 #'page_id = 123,title_val = 'post title',excerpt_val = 'post excerpt',fifu_val = 'https://remotesite.com/image.png',
 #'content_val = 'the page content as a string, with wordpress-accepted <strong>html</strong> (or bbcode!)',
@@ -25,12 +25,14 @@
 #'}
 #'
 #' @export update_wp_page
+#' @import tibble
+#' @import httr
+#' @import dplyr
+#' @import glue
 
 update_wp_page <- function(root_url,user,pass,page_id,title_val,excerpt_val ='',fifu_val,content_val,
                            status_val,author_val) {
-  require(tibble)
-  require(httr)
-  require(dplyr)
+
   ch = POST(glue("{root_url}/wp-json/wp/v2/pages/{page_id}"),
             authenticate(user,pass),
             body = list(title = title_val,
