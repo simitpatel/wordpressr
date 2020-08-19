@@ -10,12 +10,16 @@ get_wp_authors(root_url)
 \item{root_url}{The WordPress site for which the data is sought.}
 }
 \value{
-A dataframe with four values: the user ID for the author in the site's WordPress database; the author's URL on the site; the author's name in the database; and the value of the description field associated with the author.
-
-#'\dontrun{
-get_wp_authors('domain.com')
-}
+A dataframe with four values: the user ID for the author in the site's WordPress database;
+the author's URL on the site; the author's name in the database;
+and the value of the description field associated with the author.
 }
 \description{
 Retrieves a list of all publishers on the site.
+}
+\examples{
+\dontrun{
+get_wp_authors('domain.com')
+}
+
 }

@@ -4,11 +4,14 @@
 #'
 #' @param root_url The WordPress site for which the data is sought.
 #'
-#' @return A dataframe with four values: the user ID for the author in the site's WordPress database; the author's URL on the site; the author's name in the database; and the value of the description field associated with the author.
+#' @return A dataframe with four values: the user ID for the author in the site's WordPress database;
+#' the author's URL on the site; the author's name in the database;
+#' and the value of the description field associated with the author.
 #'
+#' @examples
 #' \dontrun{
 #' get_wp_authors('domain.com')
-#'}
+#' }
 #'
 #' @export get_wp_authors
 #' @import tibble

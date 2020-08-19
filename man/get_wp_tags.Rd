@@ -16,7 +16,7 @@ A dataframe with three values: the slug for a given tag, its ID in the WordPress
 Retrieves a list of all tags created on a given WordPress site.
 }
 \examples{
-#'\dontrun{
+\dontrun{
 get_wp_tags('domain.com')
 }
 }

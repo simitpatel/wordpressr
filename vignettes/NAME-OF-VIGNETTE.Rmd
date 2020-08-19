@@ -1,0 +1,19 @@
+---
+title: "NAME-OF-VIGNETTE"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{NAME-OF-VIGNETTE}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(wordpressr)
+```

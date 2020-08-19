@@ -7,15 +7,17 @@
 get_wp_cats(root_url)
 }
 \arguments{
-\item{root_url}{}
+\item{root_url}{THe domain for which categories are sought to be retrieved.}
 }
 \value{
 A data frame, unique by category ID, with 7 columns: category ID, category name, category slug, post count, description, URL, and parent category.
-
-\dontrun{
-get_wp_cats(root_url = 'domain.com')
-}
 }
 \description{
 Retrieves the categories created on a WordPress site.
+}
+\examples{
+\dontrun{
+get_wp_cats(root_url = 'domain.com')
+}
+
 }

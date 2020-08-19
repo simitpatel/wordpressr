@@ -6,6 +6,7 @@
 #'
 #' @return A data frame, unique by category ID, with 7 columns: category ID, category name, category slug, post count, description, URL, and parent category.
 #'
+#' @examples
 #' \dontrun{
 #'get_wp_cats(root_url = 'domain.com')
 #'}

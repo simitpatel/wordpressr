@@ -11,11 +11,13 @@ get_wp_users(root_url)
 }
 \value{
 A dataframe with three columns: the ID of the user in the WordPress database; their user name on the site; and the URL of their user page on the site.
-
-\dontrun{
-get_wp_users(root_url = 'domain.com')
-}
 }
 \description{
 Returns all the registered users on a given WordPress site that can be retrieved without a key.
+}
+\examples{
+\dontrun{
+get_wp_users(root_url = 'domain.com')
+}
+
 }

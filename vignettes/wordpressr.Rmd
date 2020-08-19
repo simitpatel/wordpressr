@@ -1,0 +1,46 @@
+---
+title: "Introduction to wordpressr"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to wordpressr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+#Purpose
+
+This package aims to facilitate usage of the WordPress REST APIs native to all WordPress sites. To use this package with a given WordPress site, you'll want:
+
+1. Pretty permalinks enabled (i.e. domain.com/category/post-title-id/ instead of domain.com/?p=123)
+1. The [Application Passwords](https://wordpress.org/plugins/application-passwords/) plugin installed and activated
+1. After installing and activating the Application Passwords plugin, select a user to whom you would like to grant permissions to update, create, or delete posts, pages, categories, or tags. This user is likely to be an administrator. Click on this user in the WordPress admin panel, and you will see the ability to create an application for them near the bottom of their user page. Create an application for them giving it name you desire. Upon doing so, you'll be presented one time with a password that looks like this:
+
+__XXXX XXXX XXXX XXXX__
+
+Record this password, preferably as an environment variable. You can do this by entering a value in your .Renviron file, like so:
+
+```{r, eval = FALSE}
+wordpress_key=XXXX XXXX XXX XXXX
+```
+
+Interactively, you can also set an environment variable like so:
+
+```{r, eval = FALSE}
+Sys.setenv('wordpress_key'='XXXX XXXX XXX XXXX')
+```
+
+Naturally be sure to utilize the password provided to you by the Application Passwords plugin in your WordPress admin panel in place of the value noted above.  
+
+At this point, you are now ready to use __wordpressr__. The package, still in development, offers the ability to:
+
+1. Retrieve existing posts
+1. Update existing posts
+1. Create new posts
+1. Update existing pages
+2. Create new pages
+1. Retrieve existing wordpress authors
+1. Retrieve existing tags
+1. Create new tags
+1. Get existing categories
+1. Update existing categories
+

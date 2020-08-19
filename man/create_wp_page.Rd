@@ -13,9 +13,7 @@ create_wp_page(
   content_val,
   status_val,
   author_val,
-  format_val = "standard",
-  categories_val,
-  tag_val = ""
+  format_val = "standard"
 )
 }
 \arguments{
@@ -23,8 +21,10 @@ create_wp_page(
 
 \item{user}{The username to be passed into the API call to create the page.}
 
-\item{pass}{The password to be used in the API call to create the page. To get this value, you must have the Application Passwords plugin
-installed, and must create an application using that plugin via your WordPress admin panel; there you will get the password needed.}
+\item{pass}{The password to be used in the API call to create the page. To get this value, you must have the
+Application Passwords plugin
+installed, and must create an application using that plugin via your WordPress admin panel; there
+you will get the password needed.}
 
 \item{title_val}{The title of the page you are creating.}
 
@@ -35,12 +35,15 @@ installed, and must create an application using that plugin via your WordPress a
 \item{status_val}{The status of the page. Can be one of 'draft','publish','pending','future','private'.}
 
 \item{author_val}{The user ID of the author creating the page.}
+
+\item{format_val}{The WordPress format to use. Defaults to 'standard'.}
 }
 \value{
 A list containing the status code of the API call. A status code of 200 indicates the call was a success.
 }
 \description{
-Creates a new page on the WordPress site provided using the credentials entered, with content and other information provided.
+Creates a new page on the WordPress site provided using the credentials entered, with content and
+other information provided.
 }
 \examples{
 \dontrun{
