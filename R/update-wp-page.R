@@ -28,7 +28,8 @@
 #' @import tibble
 #' @import httr
 #' @import dplyr
-#' @import glue
+#' @importFrom glue glue
+#' @importFrom glue glue_collapse
 
 update_wp_page <- function(root_url,user,pass,page_id,title_val,excerpt_val ='',fifu_val,content_val,
                            status_val,author_val) {

@@ -24,7 +24,8 @@
 #' @import tibble
 #' @import httr
 #' @import dplyr
-#' @import glue
+#' @importFrom glue glue
+#' @importFrom glue glue_collapse
 
 update_wp_cat <- function(domain,user, pass,tag_id,tag_name,tag_slug,tag_description,verbose = TRUE) {
 

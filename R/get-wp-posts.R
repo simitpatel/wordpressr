@@ -17,6 +17,8 @@
 #' @import httr
 #' @import dplyr
 #' @import glue
+#' @importFrom glue glue
+#' @importFrom glue glue_collapse
 
 get_wp_posts <- function(root_url, post_count = Inf,after_date = NULL) {
 
