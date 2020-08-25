@@ -33,7 +33,7 @@
 #'status_val = 'draft',post_id = 123,format_val = 'standard',categories_val = 1, tag_val = 1)
 #'}
 #'
-#' @export create_wp_post
+#' @export update_wp_post
 #' @import tibble
 #' @import httr
 #' @import dplyr
