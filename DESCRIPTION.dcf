@@ -1,0 +1,27 @@
+Package: wordpressr
+Type: Package
+Title: An API Wrapper for WordPress Site APIs
+Version: 0.0.0.9000
+Authors@R: person("Simit", "Patel", email = "simit@sixjupiter.com",
+  role = c("aut", "cre"))
+URL: https://storage.googleapis.com/wordpressr/index.html
+BugReports: https://github.com/simitpatel/wordpressr/issues
+Description: An API wrapper that helps R developers retrieve data from a WordPress site's API in tidy format, in addition to
+    publishing content on the WordPress site. 
+Imports:
+    httr,
+    tibble,
+    dplyr,
+    tidyr,
+    magrittr,
+    glue,
+    purrr
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.0
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat
+VignetteBuilder: knitr
