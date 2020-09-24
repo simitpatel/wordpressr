@@ -18,8 +18,8 @@
 #' @param author_val The user ID of the author creating the page.
 #' @param format_val The WordPress format to use. Defaults to 'standard'.
 #'
-#' @return A list containing the status code of the API call. A status code of 200 indicates
-#' the call was a success.
+#' @return A tibble containing the arguments passed in as well as the URL retrieved from the
+#' API response.
 #'
 #'@examples
 #' \dontrun{
@@ -32,13 +32,13 @@
 #'}
 #'
 #'
-#' @export create_wp_post
+#' @export create_wp_page
 #' @import tibble
 #' @import httr
 #' @import dplyr
 
 create_wp_page <- function(root_url,user,pass,title_val,excerpt_val ='',content_val,status_val,
-                           author_val,format_val = 'standard',output = 'tibble') {
+                           author_val,format_val = 'standard') {
 
   ch = httr::POST(paste0(root_url,"/wp-json/wp/v2/pages"),
             httr::authenticate(user,pass),
@@ -49,10 +49,7 @@ create_wp_page <- function(root_url,user,pass,title_val,excerpt_val ='',content_
                         author=author_val,
                         format=format_val),
             encode = "json") %>% content()
-  if(output == 'tibble') {
-    cht <- tibble(title = title_val, status = status_val, author = author_val, url = ch$url)
-  }
-  if(output != 'tibble') {
-    return(ch)
-  }
+
+  cht <- tibble(title = title_val, status = status_val, author = author_val, url = ch$url)
+  return(cht)
 }
