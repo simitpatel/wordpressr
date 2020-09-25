@@ -15,6 +15,7 @@
 #' @param content_val The content of the page.
 #' @param status_val The status of the page. Can be one of 'draft','publish','pending',
 #' 'future','private'.
+#' @param slug_val The slug to be assigned to the page. Can be automatically generated if left as NULL.
 #' @param author_val The user ID of the author creating the page.
 #' @param format_val The WordPress format to use. Defaults to 'standard'.
 #'
@@ -38,18 +39,21 @@
 #' @import dplyr
 
 create_wp_page <- function(root_url,user,pass,title_val,excerpt_val ='',content_val,status_val,
-                           author_val,format_val = 'standard') {
-
+                           slug_val = NULL,author_val,format_val = 'standard') {
+  pb <- list(title = title_val,
+       excerpt = excerpt_val,
+       content = content_val,
+       status = status_val,
+       slug = slug_val,
+       author=author_val,
+       format=format_val)
+  if(is.null(slug_val)) {
+    pb$slug <- NULL
+  }
   ch = httr::POST(paste0(root_url,"/wp-json/wp/v2/pages"),
             httr::authenticate(user,pass),
-            body = list(title = title_val,
-                        excerpt = excerpt_val,
-                        content = content_val,
-                        status = status_val,
-                        author=author_val,
-                        format=format_val),
-            encode = "json") %>% content()
+            body = pb,encode = 'json') %>% content()
 
-  cht <- tibble(title = title_val, status = status_val, author = author_val, url = ch$url)
+  cht <- tibble(title = title_val, status = status_val, author = author_val, url = ch$link,page_id = ch$id)
   return(cht)
 }

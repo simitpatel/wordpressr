@@ -12,6 +12,7 @@
 #' @param fifu_val If the FIFU plugin is installed, the URL of the featured image can be inserted here.
 #' @param content_val The content of the page.
 #' @param status_val The status of the page. Can be one of 'draft','publish','pending','future','private'.
+#' @param slug_val The slug to be assigned to the page. Can be automatically generated if left as NULL.
 #' @param author_val The user ID of the author to be associated with the page.
 #'
 #' @return A list containing the status code of the API call. A status code of 200 indicates the call was a success.
@@ -21,7 +22,7 @@
 #'update_wp_page(root_url = 'https://domain.com',user = Sys.getenv('username'),pass = Sys.getenv('password'),
 #'page_id = 123,title_val = 'post title',excerpt_val = 'post excerpt',fifu_val = 'https://remotesite.com/image.png',
 #'content_val = 'the page content as a string, with wordpress-accepted <strong>html</strong> (or bbcode!)',
-#'status_val = 'draft',author_val = '2')
+#'status_val = 'draft',slug_val = NULL, author_val = '2')
 #'}
 #'
 #' @export update_wp_page
@@ -32,16 +33,26 @@
 #' @importFrom glue glue_collapse
 
 update_wp_page <- function(root_url,user,pass,page_id,title_val,excerpt_val ='',fifu_val,content_val,
-                           status_val,author_val) {
+                           status_val,slug_val = NULL, author_val,format_val = 'standard') {
+  pb <- list(title = title_val,
+             excerpt = excerpt_val,
+             content = content_val,
+             status = status_val,
+             slug = slug_val,
+             fifu = fifu_val,
+             author=author_val,
+             format=format_val)
+  if(is.null(slug_val)) {
+    pb$slug <- NULL
+  }
+  if(is.null(fifu_val)) {
+    pb$fifu <- NULL
+  }
 
   ch = POST(glue("{root_url}/wp-json/wp/v2/pages/{page_id}"),
             authenticate(user,pass),
-            body = list(title = title_val,
-                        excerpt = excerpt_val,
-                        fifu_image_url = fifu_val,
-                        content = content_val,
-                        status = status_val,
-                        author=author_val),
-            encode = "json")
-  return(ch)
+            body = pb,
+            encode = "json") %>% content()
+  cht <- tibble(title = title_val, status = status_val, author = author_val, url = ch$link,page_id = ch$id)
+  return(cht)
 }
