@@ -23,7 +23,8 @@
 #' @param tag_val The tag IDs the post is to be associated with;
 #' comma separate in a category string if more than one.
 #'
-#' @return A list containing the status code of the API call. A status code of 200 indicates the call was a success.
+#' @return A tibble containing the arguments passed in as well as the URL retrieved from the
+#' API response.
 #'
 #'@examples
 #' \dontrun{
@@ -58,5 +59,8 @@ create_wp_post <- function(root_url,user,pass,title_val,excerpt_val ='',content_
             httr::authenticate(user,pass),
             body = pb,
             encode = "json")
-  return(ch)
+  response <- ch %>% httr::content()
+  cht <- tibble::tibble(post_id = response$id,url = response$guid$rendered,categories = categories_val,tags = tag_val,
+                        title = title_val, status = status_val, author = author_val)
+  return(cht)
 }
