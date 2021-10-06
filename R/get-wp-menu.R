@@ -21,7 +21,7 @@
 
 get_wp_menus <- function(root_url) {
   response <- content(GET(paste0(root_url,'/wp-json/wp-api-menus/v2/menus/'),
-                          authenticate('apiuser','hfA3 Bl8l GNuZ aJcR QTGV Zt0w'),accept_json()))
+                          authenticate(Sys.getenv('wp_user'),Sys.getenv('wp_key')),accept_json()))
   id <- response %>% map2('ID',purrr::pluck) %>% modify_if(is.null, ~as.numeric(NA))
   term_id <- response %>% map2('term_id',purrr::pluck) %>% modify_if(is.null, ~as.numeric(NA))
   slug <- response %>% map2('name',purrr::pluck) %>% modify_if(is.null, ~as.character(NA))
@@ -35,5 +35,5 @@ get_wp_menus <- function(root_url) {
                   term_taxonomy_id = term_taxonomy_id, taxonomy = taxonomy, description = description,
                   parent = parent, count = count) %>% mutate_all(unlist)
   return(menus)
-  }
 }
+
