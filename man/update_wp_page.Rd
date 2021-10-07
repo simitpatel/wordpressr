@@ -14,7 +14,9 @@ update_wp_page(
   fifu_val,
   content_val,
   status_val,
-  author_val
+  slug_val = NULL,
+  author_val,
+  format_val = "standard"
 )
 }
 \arguments{
@@ -37,6 +39,8 @@ installed, and must create an application using that plugin via your WordPress a
 
 \item{status_val}{The status of the page. Can be one of 'draft','publish','pending','future','private'.}
 
+\item{slug_val}{The slug to be assigned to the page. Can be automatically generated if left as NULL.}
+
 \item{author_val}{The user ID of the author to be associated with the page.}
 }
 \value{
@@ -50,7 +54,7 @@ Updates an existing WordPress page with new values.
 update_wp_page(root_url = 'https://domain.com',user = Sys.getenv('username'),pass = Sys.getenv('password'),
 page_id = 123,title_val = 'post title',excerpt_val = 'post excerpt',fifu_val = 'https://remotesite.com/image.png',
 content_val = 'the page content as a string, with wordpress-accepted <strong>html</strong> (or bbcode!)',
-status_val = 'draft',author_val = '2')
+status_val = 'draft',slug_val = NULL, author_val = '2')
 }
 
 }

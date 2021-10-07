@@ -52,7 +52,8 @@ character string if more than one.}
 comma separate in a category string if more than one.}
 }
 \value{
-A list containing the status code of the API call. A status code of 200 indicates the call was a success.
+A tibble containing the arguments passed in as well as the URL retrieved from the
+API response.
 }
 \description{
 wCreates a new post on the WordPress site provided using the credentials entered,

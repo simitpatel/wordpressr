@@ -12,6 +12,7 @@ create_wp_page(
   excerpt_val = "",
   content_val,
   status_val,
+  slug_val = NULL,
   author_val,
   format_val = "standard"
 )
@@ -28,18 +29,23 @@ WordPress admin panel; there you will get the password needed.}
 
 \item{title_val}{The title of the page you are creating.}
 
-\item{excerpt_val}{The excerpt to be shown where your WordPress features excerpts of pages.}
+\item{excerpt_val}{The excerpt to be shown where your WordPress features excerpts of
+pages.}
 
 \item{content_val}{The content of the page.}
 
-\item{status_val}{The status of the page. Can be one of 'draft','publish','pending','future','private'.}
+\item{status_val}{The status of the page. Can be one of 'draft','publish','pending',
+'future','private'.}
+
+\item{slug_val}{The slug to be assigned to the page. Can be automatically generated if left as NULL.}
 
 \item{author_val}{The user ID of the author creating the page.}
 
 \item{format_val}{The WordPress format to use. Defaults to 'standard'.}
 }
 \value{
-A list containing the status code of the API call. A status code of 200 indicates the call was a success.
+A tibble containing the arguments passed in as well as the URL retrieved from the
+API response.
 }
 \description{
 Creates a new page on the WordPress site provided using the
@@ -47,9 +53,11 @@ credentials entered, with content and other information provided.
 }
 \examples{
 \dontrun{
-create_wp_page(root_url = 'https://domain.com',user = Sys.getenv('username'),pass = Sys.getenv('password'),
+create_wp_page(root_url = 'https://domain.com',user = Sys.getenv('username'),
+pass = Sys.getenv('password'),
 title_val = 'post title',excerpt_val = 'post excerpt',
-content_val = 'the post content as a string, with wordpress-accepted <strong>html</strong> (or bbcode!)',
+content_val = 'the post content as a string, with wordpress-accepted
+<strong>html</strong> (or bbcode!)',
 status_val = 'draft',format_val = 'standard')
 }
 

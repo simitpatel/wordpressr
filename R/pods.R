@@ -81,4 +81,37 @@ get_wp_catlike_pod <- function(route) {
   return(pod_table_fmt)
 }
 
+#' @export get_pod_ids
+#' @import tibble
+#' @import httr
+#' @import dplyr
+#' @importFrom glue glue
+
+#' @title Get a list of IDs associated with a pod.
+#'
+#' @description Returns all the IDs asssociated with a podd.
+
+get_pod_ids <- function(route) {
+  pod_list <- list(a = 1,data = list(status = 200))
+  i = 1
+  pod_full <- list()
+  while(pod_list$data$status %in% c(200,201)) {
+    print(i)
+    pod_list <- httr::GET(glue::glue("{Sys.getenv('wp_domain')}/wp-json/wp/v2/{route}?per_page=100&page={i}"),
+                          httr::authenticate(Sys.getenv("sn_user"),Sys.getenv('sn_wp_key'))) %>%
+      httr::content()
+    if(!is.null(pod_list$code)) {
+      if(pod_list$code == "rest_post_invalid_page_number") {
+        break
+      }
+    }
+    if(is.null(pod_list$code)) {
+      pod_full <- c(pod_full,pod_list)
+      pod_list$data$status <- 200
+    }
+    i = i + 1
+  }
+  return(pod_full)
+}
+
 
