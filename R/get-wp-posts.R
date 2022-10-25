@@ -19,7 +19,44 @@
 #' @importFrom glue glue
 #' @importFrom glue glue_collapse
 
-get_wp_posts <- function(root_url, post_count = Inf,after_date = NULL) {
+get_wp_posts <- function(root_url, post_count = Inf, after_date = NULL) {
+  unwrap_response <- function(response) {
+    response_df <- tibble(id = response$id,
+           date = response$date,
+           slug = response$slug,
+           link = response$link,
+           url = response$guid$rendered,
+           title = response$title$rendered,
+           content = response$content$rendered,
+           author = response$author)
+    response_tags <- c()
+    if(length(response$tags) > 0) {
+      for(i in 1:length(response$tags)) {
+        itag = response$tags[[i]]
+        response_tags <- c(response_tags,itag)
+      }
+      rtg <- response_tags %>% glue_collapse(sep = ',', last = ',')
+    }
+    if(length(response$tags) == 0) {
+      rtg = ''
+    }
+    response_cats <- c()
+    if(length(response$categories) > 0) {
+      for(i in 1:length(response$categories)) {
+        icat = response$categories[[i]]
+        response_cats <- c(response_cats,icat)
+      }
+      rtc <- response_cats %>% glue_collapse(sep = ',', last = ',')
+    }
+    if(length(response$tags) == 0) {
+      rtg = ''
+    }
+    if(length(response$categories) == 0) {
+      rtc = ''
+    }
+
+    mutate(response_df, tags = rtg, categories = rtc)
+  }
 
   if(!is.null(after_date)) {
     after_date <- after_date %>% as.character() %>% paste0("T00:00:00")
@@ -38,40 +75,14 @@ get_wp_posts <- function(root_url, post_count = Inf,after_date = NULL) {
         return(posts_real)
       }
       for(k in 1:length(response)) {
-        response_df <- tibble(id = response[[k]]$id, date = response[[k]]$date, url = response[[k]]$guid$rendered,
-                              title = response[[k]]$title$rendered, content = response[[k]]$content$rendered,
-                              author = response[[k]]$author)
-        response_tags <- c()
-        if(length(response[[k]]$tags) > 0) {
-          for(i in 1:length(response[[k]]$tags)) {
-            itag = response[[k]]$tags[[i]]
-            response_tags <- c(response_tags,itag)
-          }
-          rtg <- response_tags %>% glue_collapse(sep = ',', last = ',')
-        }
-        response_cats <- c()
-        if(length(response[[k]]$categories) > 0) {
-          for(i in 1:length(response[[k]]$categories)) {
-            icat = response[[k]]$categories[[i]]
-            response_cats <- c(response_cats,icat)
-          }
-          rtc <- response_cats %>% glue_collapse(sep = ',', last = ',')
-        }
-        if(length(response[[k]]$tags) == 0) {
-          rtg = ''
-        }
-        if(length(response[[k]]$categories) == 0) {
-          rtc = ''
-        }
-        response_df <- response_df %>% mutate(tags = rtg, categories = rtc)
-        posts_real <- bind_rows(posts_real,response_df)
+        posts_real <- bind_rows(posts_real, unwrap_response(response[[k]]))
       }
     }
     return(posts_real)
   }
 
   if(!is.finite(post_count)) {
-    response <- list(list(1),list(1),list(status = 1))
+    response <- list(list(1), list(1), list(status = 1))
     n <- 1
     posts_real <- tibble()
 
@@ -84,36 +95,7 @@ get_wp_posts <- function(root_url, post_count = Inf,after_date = NULL) {
       }
       if(length(response) > 0 & response[[3]]$status != 400) {
         for(k in 1:length(response)) {
-          response_df <- tibble(id = response[[k]]$id, date = response[[k]]$date, url = response[[k]]$guid$rendered,
-                                title = response[[k]]$title$rendered, content = response[[k]]$content$rendered,
-                                author = response[[k]]$author)
-          response_tags <- c()
-          if(length(response[[k]]$tags) > 0) {
-            for(i in 1:length(response[[k]]$tags)) {
-              itag = response[[k]]$tags[[i]]
-              response_tags <- c(response_tags,itag)
-            }
-            rtg <- response_tags %>% glue_collapse(sep = ',', last = ',')
-          }
-          if(length(response[[k]]$tags) == 0) {
-            rtg = ''
-          }
-          response_cats <- c()
-          if(length(response[[k]]$categories) > 0) {
-            for(i in 1:length(response[[k]]$categories)) {
-              icat = response[[k]]$categories[[i]]
-              response_cats <- c(response_cats,icat)
-            }
-            rtc <- response_cats %>% glue_collapse(sep = ',', last = ',')
-          }
-          if(length(response[[k]]$tags) == 0) {
-            rtg = ''
-          }
-          if(length(response[[k]]$categories) == 0) {
-            rtc = ''
-          }
-          response_df <- response_df %>% mutate(tags = rtg, categories = rtc)
-          posts_real <- bind_rows(posts_real,response_df)
+          posts_real <- bind_rows(posts_real, unwrap_response(response[[k]]))
         }
         n <- n + 1
       }
