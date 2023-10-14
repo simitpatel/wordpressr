@@ -38,7 +38,7 @@ get_wp_posts <- function(root_url, post_count = Inf,after_date = NULL) {
         return(posts_real)
       }
       for(k in 1:length(response)) {
-        response_df <- tibble(id = response[[k]]$id, date = response[[k]]$date, url = response[[k]]$guid$rendered,
+        response_df <- tibble(id = response[[k]]$id, date = response[[k]]$date, url = response[[k]]$link,
                               title = response[[k]]$title$rendered, content = response[[k]]$content$rendered,
                               author = response[[k]]$author)
         response_tags <- c()
@@ -84,7 +84,7 @@ get_wp_posts <- function(root_url, post_count = Inf,after_date = NULL) {
       }
       if(length(response) > 0 & response[[3]]$status != 400) {
         for(k in 1:length(response)) {
-          response_df <- tibble(id = response[[k]]$id, date = response[[k]]$date, url = response[[k]]$guid$rendered,
+          response_df <- tibble(id = response[[k]]$id, date = response[[k]]$date, url = response[[k]]$link,
                                 title = response[[k]]$title$rendered, content = response[[k]]$content$rendered,
                                 author = response[[k]]$author)
           response_tags <- c()
